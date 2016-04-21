@@ -161,6 +161,13 @@ sections = [
 		module: 'my-sites/plans',
 		secondary: true,
 		group: 'sites'
+	},
+	{
+		name: 'testing',
+		paths: [ '/testing' ],
+		module: 'my-sites/testing',
+		secondary: true,
+		group: 'sites'
 	}
 ];
 
