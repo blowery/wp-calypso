@@ -177,7 +177,8 @@ const MediaModalSecondaryActions = React.createClass( {
 	},
 
 	renderPlanStorage() {
-		if ( this.props.selectedItems.length === 0 ) {
+		if ( this.props.selectedItems.length === 0 &&
+			 ModalViews.EDIT !== this.props.activeView ) {
 			const eventName = 'calypso_upgrade_nudge_impression';
 			const eventProperties = { cta_name: 'plan-media-storage' };
 			return (
