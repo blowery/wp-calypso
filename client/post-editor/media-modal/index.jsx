@@ -211,13 +211,20 @@ module.exports = React.createClass( {
 		PostStats.recordEvent( 'Upload Media' );
 	},
 
+	onImageEdited: function ( imageBlob, imageFilename ) {
+		this.imageBlob = imageBlob;
+		this.imageFilename = imageFilename;
+	},
+
 	onImageEditorOpen: function () {
+		delete this.imageBlob;
 		this.resetImageEditor();
 		this.setView( ModalViews.EDIT );
 	},
 
 	onAddAndEditImage: function () {
-		this.setDetailSelectedIndex( -1 );
+		delete this.imageBlob;
+		MediaActions.setLibrarySelectedItems( this.props.site.ID, [] );
 		this.resetImageEditor();
 
 		this.setView( ModalViews.EDIT );
@@ -229,6 +236,11 @@ module.exports = React.createClass( {
 		if ( item ) {
 			this.setView( ModalViews.DETAIL );
 			return;
+		}
+
+		if ( this.imageBlob ) {
+			var file = new File( [ this.imageBlob ], this.imageFilename );
+			MediaActions.add( this.props.site.ID, file );
 		}
 
 		this.setView( ModalViews.LIST );
@@ -417,7 +429,8 @@ module.exports = React.createClass( {
 						items={ this.props.mediaLibrarySelectedItems }
 						selectedIndex={ this.state.detailSelectedIndex }
 						onChangeView={ this.setView }
-						imageState={ this.state.imageEditorState } />
+						imageState={ this.state.imageEditorState }
+						onImageEdited={ this.onImageEdited } />
 				);
 				break;
 		}

@@ -22,14 +22,16 @@ module.exports = React.createClass( {
 		items: React.PropTypes.array,
 		selectedIndex: React.PropTypes.number,
 		onChangeView: React.PropTypes.func,
-		imageState: React.PropTypes.object
+		imageState: React.PropTypes.object,
+		onImageEdited: React.PropTypes.func
 	},
 
 	getDefaultProps: function() {
 		return {
 			selectedIndex: 0,
 			onChangeView: noop,
-			imageState: {}
+			imageState: {},
+			onImageEdited: noop
 		}
 	},
 
@@ -71,8 +73,11 @@ module.exports = React.createClass( {
 	},
 
 	onFilesDrop: function ( files ) {
+		var file = files[0];
+
 		this.setState({
-			src: URL.createObjectURL( files[0] )
+			fileName: file.name,
+			src: URL.createObjectURL( file )
 		});
 	},
 
@@ -110,9 +115,11 @@ module.exports = React.createClass( {
 							onFilesDrop={ this.onFilesDrop } />
 						<EditCanvas
 							src={ this.state.src }
+							fileName={ this.state.fileName }
 							rotate={ this.state.imageState.rotate }
 							scaleX={ this.state.imageState.scaleX }
-							scaleY={ this.state.imageState.scaleY } />
+							scaleY={ this.state.imageState.scaleY }
+							onImageEdited={ this.props.onImageEdited } />
 						<EditToolbar
 							imageState={ this.state.imageState }
 							imageStateChanged={ this.imageStateChanged } />

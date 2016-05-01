@@ -7,7 +7,7 @@ var React = require( 'react' ),
 /**
  * Internal dependencies
  */
-
+var noop = require( 'lodash/noop' );
 
 module.exports = React.createClass( {
 	displayName: 'MediaModalDetailEditCanvas',
@@ -17,14 +17,16 @@ module.exports = React.createClass( {
 		item: React.PropTypes.object,
 		rotate: React.PropTypes.number,
 		scaleX: React.PropTypes.number,
-		scaleY: React.PropTypes.number
+		scaleY: React.PropTypes.number,
+		onImageEdited: React.PropTypes.func
 	},
 
 	getDefaultProps: function () {
 		return {
 			rotate: 0,
 			scaleX: 1,
-			scaleY: 1
+			scaleY: 1,
+			onImageEdited: noop
 		}
 	},
 
@@ -94,7 +96,11 @@ module.exports = React.createClass( {
 		context.drawImage( this.image, -this.image.width/2, -this.image.height/2 );
 		context.restore();
 
-		//canvas.toBlob(function(blob){ x = blob; }, "image/jpeg", 0.95); // JPEG at 95% quality
+		canvas.toBlob( this.toBlobCallback, "image/jpeg", 0.95 ); // JPEG at 95% quality
+	},
+
+	toBlobCallback: function ( blob ) {
+		this.props.onImageEdited( blob, this.props.fileName.replace( /\.[^.]+$/, '' ) + '.jpg' );
 	},
 
 	render: function () {
