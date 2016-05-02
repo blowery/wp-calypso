@@ -13,7 +13,7 @@ var Notice = require( 'components/notice' ),
 module.exports = React.createClass( {
 	displayName: 'PushNotificationPrompt',
 
-	mixins: [ observe( 'pushNotifications' ) ],
+	mixins: [ observe( 'pushNotifications', 'user' ) ],
 
 	getInitialState: function() {
 		return {
@@ -86,9 +86,16 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
-		var pushNotifications = this.props.pushNotifications;
+		var pushNotifications = this.props.pushNotifications,
+			user = this.props.user;
 
 		if ( this.state.dismissed ) {
+			return null;
+		}
+
+		if ( user.fetching || ( user.get() && ! user.get().email_verified ) ) {
+			// Don't show the dialog until the user is fetched.
+			// Don't show the dialog if the user hasn't verified their email address
 			return null;
 		}
 

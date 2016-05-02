@@ -106,7 +106,11 @@ Layout = React.createClass( {
 			return null;
 		}
 
-		return <PushNotificationPrompt pushNotifications={ this.props.pushNotifications } />;
+		if ( ! this.props.user ) {
+			return null;
+		}
+
+		return <PushNotificationPrompt user={ this.props.user } pushNotifications={ this.props.pushNotifications } />;
 	},
 
 	renderMasterbar: function() {
