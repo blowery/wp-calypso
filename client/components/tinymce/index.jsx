@@ -4,7 +4,6 @@
 const ReactDom = require( 'react-dom' ),
 	React = require( 'react' ),
 	classnames = require( 'classnames' ),
-	config = require( 'config' ),
 	autosize = require( 'autosize' ),
 	forEach = require( 'lodash/forEach' ),
 	assign = require( 'lodash/assign' ),
