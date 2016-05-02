@@ -98,6 +98,10 @@ Layout = React.createClass( {
 	},
 
 	renderPushNotificationPrompt: function() {
+		if ( ! config.isEnabled( 'push-notifications' ) ) {
+			return null;
+		}
+
 		if ( ! this.props.pushNotifications ) {
 			return null;
 		}

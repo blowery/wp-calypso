@@ -9,6 +9,7 @@ import store from 'store';
 /**
  * Internal dependencies
  */
+import config from 'config';
 import wpcom from 'lib/wp';
 
 let _pushNotifications = false;
@@ -69,6 +70,10 @@ function PushNotifications() {
 }
 
 PushNotifications.prototype.initialize = function() {
+	if ( ! config.isEnabled( 'push-notifications' ) ) {
+		return;
+	}
+
 	// Only register the service worker in browsers that support it.
 	if ( 'serviceWorker' in window.navigator ) {
 		window.navigator.serviceWorker.register( '/service-worker.js' ).then( initializeState.bind( this ) ).catch( function( err ) {

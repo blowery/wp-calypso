@@ -150,7 +150,8 @@ function getDefaultContext( request ) {
 		faviconURL: '//s1.wp.com/i/favicon.ico',
 		isFluidWidth: !! config.isEnabled( 'fluid-width' ),
 		devDocsURL: '/devdocs',
-		catchJsErrors: '/calypso/catch-js-errors-' + 'v2' + '.min.js'
+		catchJsErrors: '/calypso/catch-js-errors-' + 'v2' + '.min.js',
+		isPushEnabled: !! config.isEnabled( 'push-notifications' )
 	};
 
 	context.app = {

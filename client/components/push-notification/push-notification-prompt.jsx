@@ -2,7 +2,7 @@
  * External dependencies
  */
 var React = require( 'react' ),
-	debug = require( 'debug' )('asdf');
+	debug = require( 'debug' )( 'calypso:push-notification-prompt' );
 
 /**
  * Internal dependencies
