@@ -210,37 +210,19 @@ module.exports = React.createClass( {
 		PostStats.recordStat( 'media_explorer_upload' );
 		PostStats.recordEvent( 'Upload Media' );
 	},
-
-	onImageEdited: function ( imageBlob, imageFilename ) {
-		this.imageBlob = imageBlob;
-		this.imageFilename = imageFilename;
-	},
-
-	onImageEditorOpen: function () {
-		delete this.imageBlob;
-		this.resetImageEditor();
-		this.setView( ModalViews.EDIT );
-	},
-
+	
 	onAddAndEditImage: function () {
-		delete this.imageBlob;
 		MediaActions.setLibrarySelectedItems( this.props.site.ID, [] );
-		this.resetImageEditor();
 
 		this.setView( ModalViews.EDIT );
 	},
 
-	onImageEditConfirm: function () {
+	onImageEditDone: function () {
 		var item = this.props.mediaLibrarySelectedItems[ this.state.detailSelectedIndex ];
 
 		if ( item ) {
 			this.setView( ModalViews.DETAIL );
 			return;
-		}
-
-		if ( this.imageBlob ) {
-			var file = new File( [ this.imageBlob ], this.imageFilename );
-			MediaActions.add( this.props.site.ID, file );
 		}
 
 		this.setView( ModalViews.LIST );
@@ -300,16 +282,6 @@ module.exports = React.createClass( {
 		this.setView( ModalViews.DETAIL );
 	},
 
-	resetImageEditor: function () {
-		this.setState( {
-			imageEditorState: {
-				rotate: 0,
-				scaleX: 1,
-				scaleY: 1
-			},
-		} );
-	},
-
 	getFirstEnabledFilter: function() {
 		if ( this.props.enabledFilters ) {
 			return head( this.props.enabledFilters );
@@ -321,6 +293,10 @@ module.exports = React.createClass( {
 			selectedItems = this.props.mediaLibrarySelectedItems,
 			buttons;
 
+		if ( ModalViews.EDIT === this.state.activeView ) {
+			return;
+		}
+
 		buttons = [
 			<MediaModalSecondaryActions
 				site={ this.props.site }
@@ -328,26 +304,16 @@ module.exports = React.createClass( {
 				activeView={ this.state.activeView }
 				disabled={ isDisabled }
 				onDelete={ this.deleteMedia }
-				onChangeView={ this.setView } />
-		];
-
-		if ( ModalViews.EDIT === this.state.activeView ) {
-			buttons.push( {
-				action: 'reset',
-				label: this.translate( 'Reset' ),
-				onClick: this.resetImageEditor
-			}, {
-				action: 'confirm',
-				label: this.translate( 'Done' ),
-				isPrimary: true,
-				onClick: this.onImageEditConfirm
-			} );
-		} else if ( ModalViews.GALLERY !== this.state.activeView && selectedItems.length > 1 &&
-				! some( selectedItems, ( item ) => MediaUtils.getMimePrefix( item ) !== 'image' ) ) {
-			buttons.push( {
+				onChangeView={ this.setView } />,
+			{
 				action: 'cancel',
 				label: this.translate( 'Cancel' )
-			}, {
+			}
+		];
+
+		if ( ModalViews.GALLERY !== this.state.activeView && selectedItems.length > 1 &&
+				! some( selectedItems, ( item ) => MediaUtils.getMimePrefix( item ) !== 'image' ) ) {
+			buttons.push( {
 				action: 'confirm',
 				label: this.translate( 'Continue' ),
 				isPrimary: true,
@@ -356,9 +322,6 @@ module.exports = React.createClass( {
 			} );
 		} else {
 			buttons.push( {
-				action: 'cancel',
-				label: this.translate( 'Cancel' )
-			}, {
 				action: 'confirm',
 				label: this.props.labels.confirm || this.translate( 'Insert' ),
 				isPrimary: true,
@@ -407,7 +370,7 @@ module.exports = React.createClass( {
 						selectedIndex={ this.state.detailSelectedIndex }
 						onSelectedIndexChange={ this.setDetailSelectedIndex }
 						onChangeView={ this.setView }
-						onEdit={ this.onImageEditorOpen } />
+						onEdit={ this.setView.bind( this, ModalViews.EDIT ) } />
 				);
 				break;
 
@@ -428,9 +391,7 @@ module.exports = React.createClass( {
 						site={ this.props.site }
 						items={ this.props.mediaLibrarySelectedItems }
 						selectedIndex={ this.state.detailSelectedIndex }
-						onChangeView={ this.setView }
-						imageState={ this.state.imageEditorState }
-						onImageEdited={ this.onImageEdited } />
+						onImageEditDone={ this.onImageEditDone } />
 				);
 				break;
 		}

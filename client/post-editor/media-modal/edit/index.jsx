@@ -3,15 +3,17 @@
  */
 var React = require( 'react' ),
 	noop = require( 'lodash/noop' ),
-	merge = require( 'lodash/merge' ),
-	isEqual = require( 'lodash/isEqual' );
+	path = require( 'path' );
 
 /**
  * Internal dependencies
  */
-var EditCanvas = require( './edit-canvas' ),
+var ImageEditorData = require( 'components/data/image-editor-data' ),
+	EditCanvas = require( './edit-canvas' ),
 	EditToolbar = require( './edit-toolbar' ),
+	EditButtons = require( './edit-buttons' ),
 	DropZone = require( 'components/drop-zone' ),
+	MediaActions = require( 'lib/media/actions' ),
 	MediaUtils = require( 'lib/media/utils' );
 
 module.exports = React.createClass( {
@@ -21,17 +23,15 @@ module.exports = React.createClass( {
 		site: React.PropTypes.object,
 		items: React.PropTypes.array,
 		selectedIndex: React.PropTypes.number,
-		onChangeView: React.PropTypes.func,
-		imageState: React.PropTypes.object,
-		onImageEdited: React.PropTypes.func
+		onImageEdited: React.PropTypes.func,
+		onImageEditDone: React.PropTypes.func
 	},
 
 	getDefaultProps: function() {
 		return {
 			selectedIndex: 0,
-			onChangeView: noop,
-			imageState: {},
-			onImageEdited: noop
+			onImageEdited: noop,
+			onImageEditDone: noop
 		}
 	},
 
@@ -40,36 +40,41 @@ module.exports = React.createClass( {
 	},
 
 	getDefaultState: function ( props ) {
-		var src;
+		var src,
+			fileName = 'default';
 
 		if ( this.props.items && this.props.items[ this.props.selectedIndex ] ) {
 			src = MediaUtils.url( this.props.items[ this.props.selectedIndex ], {
 				photon: this.props.site && ! this.props.site.is_private
 			} );
+
+			fileName = path.basename(src);
 		}
 
 		return  {
-			src: src,
-			imageState: merge(
-				{
-					rotate: 0,
-					scaleX: 1,
-					scaleY: 1
-				},
-				props.imageState
-			)
+			src,
+			fileName
 		};
 	},
 
-	componentWillReceiveProps: function ( newProps ) {
-		if ( newProps.imageState &&
-			! isEqual( newProps.imageState, this.state.imageState ) ) {
-			this.setState( { imageState: newProps.imageState } );
+	onDone: function () {
+		try {
+			var canvasComponent = this.refs.editCanvas;
+			canvasComponent.toBlob( this.onImageExtracted );
+		} catch ( e ) {
+			console.error( e );
 		}
+
+		this.props.onImageEditDone();
 	},
 
-	imageStateChanged: function( state ) {
-		this.setState( { imageState: merge( {}, this.state.imageState, state ) } );
+	onImageExtracted: function ( blob ) {
+		var file, fileName = this.state.fileName;
+
+		fileName = fileName.replace( /\.[^.]+$/, '' ) + '.jpg';
+		file = new File( [ blob ], fileName );
+
+		MediaActions.add( this.props.site.ID, file );
 	},
 
 	onFilesDrop: function ( files ) {
@@ -108,22 +113,19 @@ module.exports = React.createClass( {
 		return (
 			<div className="editor-media-modal-edit">
 				<figure>
-					<div className="editor-media-modal-edit__content editor-media-modal__content">
+					<ImageEditorData className="editor-media-modal-edit__content editor-media-modal__content" >
 						<DropZone
 							fullScreen={ true }
 							onVerifyValidTransfer={ this.isValidTransfer }
 							onFilesDrop={ this.onFilesDrop } />
 						<EditCanvas
-							src={ this.state.src }
-							fileName={ this.state.fileName }
-							rotate={ this.state.imageState.rotate }
-							scaleX={ this.state.imageState.scaleX }
-							scaleY={ this.state.imageState.scaleY }
-							onImageEdited={ this.props.onImageEdited } />
-						<EditToolbar
-							imageState={ this.state.imageState }
-							imageStateChanged={ this.imageStateChanged } />
-					</div>
+							ref="editCanvas"
+							src={ this.state.src } />
+						<EditToolbar />
+						<EditButtons
+							onCancel={ this.props.onImageEditDone }
+							onDone={ this.onDone } />
+					</ImageEditorData>
 				</figure>
 			</div>
 		);

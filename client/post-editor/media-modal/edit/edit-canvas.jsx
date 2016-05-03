@@ -13,20 +13,17 @@ module.exports = React.createClass( {
 	displayName: 'MediaModalDetailEditCanvas',
 
 	propTypes: {
-		site: React.PropTypes.object,
-		item: React.PropTypes.object,
+		src: React.PropTypes.string,
 		rotate: React.PropTypes.number,
 		scaleX: React.PropTypes.number,
-		scaleY: React.PropTypes.number,
-		onImageEdited: React.PropTypes.func
+		scaleY: React.PropTypes.number
 	},
 
 	getDefaultProps: function () {
 		return {
 			rotate: 0,
 			scaleX: 1,
-			scaleY: 1,
-			onImageEdited: noop
+			scaleY: 1
 		}
 	},
 
@@ -70,6 +67,12 @@ module.exports = React.createClass( {
 		this.drawImage();
 	},
 
+	toBlob: function ( callback ) {
+		var canvas = ReactDOM.findDOMNode( this.refs.canvas );
+
+		canvas.toBlob( callback, "image/jpeg", 0.95 ); // JPEG at 95% quality
+	},
+
 	drawImage: function () {
 		var canvas, context;
 
@@ -95,12 +98,6 @@ module.exports = React.createClass( {
 		context.rotate( this.props.rotate * Math.PI/180 );
 		context.drawImage( this.image, -this.image.width/2, -this.image.height/2 );
 		context.restore();
-
-		canvas.toBlob( this.toBlobCallback, "image/jpeg", 0.95 ); // JPEG at 95% quality
-	},
-
-	toBlobCallback: function ( blob ) {
-		this.props.onImageEdited( blob, this.props.fileName.replace( /\.[^.]+$/, '' ) + '.jpg' );
 	},
 
 	render: function () {

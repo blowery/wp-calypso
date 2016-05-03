@@ -2,9 +2,7 @@
  * External dependencies
  */
 var React = require( 'react' ),
-	noop = require( 'lodash/noop' ),
-	merge = require( 'lodash/merge' ),
-	isEqual = require( 'lodash/isEqual' );
+	noop = require( 'lodash/noop' );
 
 /**
  * Internal dependencies
@@ -15,42 +13,26 @@ module.exports = React.createClass( {
 	displayName: 'MediaModalDetailEditToolbar',
 
 	propTypes: {
-		imageState: React.PropTypes.object,
-		imageStateChanged: React.PropTypes.func
+		rotate: React.PropTypes.number,
+		scaleX: React.PropTypes.number,
+		scaleY: React.PropTypes.number,
+		setEditorState: React.PropTypes.func
 	},
 
-	getInitialState: function() {
-		return this.getDefaultState( this.props );
-	},
-
-	getDefaultState: function ( props ) {
-		return  {
-			imageState: merge(
-				{
-					rotate: 0,
-					scaleX: 1,
-					scaleY: 1
-				},
-				props.imageState
-			)
+	getDefaultProps: function () {
+		return {
+			setEditorState: noop
 		};
 	},
 
-	componentWillReceiveProps: function ( newProps ) {
-		if ( newProps.imageState &&
-			! isEqual( newProps.imageState, this.state.imageState ) ) {
-			this.setState( { imageState: newProps.imageState } );
-		}
-	},
-
 	rotate: function () {
-		this.state.imageState.rotate = ( this.state.imageState.rotate - 90 ) % 360;
-		this.props.imageStateChanged( { rotate: this.state.imageState.rotate} );
+		var rotate = ( this.props.rotate - 90 ) % 360;
+		this.props.setEditorState( { rotate } );
 	},
 
 	flip: function () {
-		this.state.imageState.scaleX = -this.state.imageState.scaleX;
-		this.props.imageStateChanged( { scaleX: this.state.imageState.scaleX } );
+		var scaleX = -this.props.scaleX;
+		this.props.setEditorState( { scaleX } );
 	},
 
 	renderButtons: function () {
