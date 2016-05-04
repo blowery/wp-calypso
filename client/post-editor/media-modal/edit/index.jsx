@@ -113,14 +113,14 @@ module.exports = React.createClass( {
 		return (
 			<div className="editor-media-modal-edit">
 				<figure>
-					<ImageEditorData className="editor-media-modal-edit__content editor-media-modal__content" >
+					<ImageEditorData
+						className="editor-media-modal-edit__content editor-media-modal__content"
+						src={ this.state.src } >
 						<DropZone
 							fullScreen={ true }
 							onVerifyValidTransfer={ this.isValidTransfer }
 							onFilesDrop={ this.onFilesDrop } />
-						<EditCanvas
-							ref="editCanvas"
-							src={ this.state.src } />
+						<EditCanvas ref="editCanvas" />
 						<EditToolbar />
 						<EditButtons
 							onCancel={ this.props.onImageEditDone }

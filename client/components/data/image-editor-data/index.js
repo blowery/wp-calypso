@@ -18,6 +18,7 @@ import { getEditorState } from 'state/media/selectors';
 const ImageEditorData = React.createClass( {
 
 	propTypes: {
+		src: React.PropTypes.string,
 		rotate: React.PropTypes.number,
 		scaleX: React.PropTypes.number,
 		scaleY: React.PropTypes.number,
