@@ -37,7 +37,7 @@
 		"dev/test-helper": true,
 		"guided-tours": true,
 		"help": true,
-		"image-editor": true,
+		"image-editor": false,
 		"jetpack/connect": true,
 		"jetpack_core_inline_update": true,
 		"keyboard-shortcuts": true,
