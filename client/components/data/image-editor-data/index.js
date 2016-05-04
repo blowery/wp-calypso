@@ -8,8 +8,8 @@ import omit from 'lodash/omit';
 /**
  * Internal dependencies
  */
-import { setEditorState, resetEditorState } from 'state/media/actions';
-import { getEditorState } from 'state/media/selectors';
+import { setImageEditorState, resetImageEditorState } from 'state/ui/editor/media/actions';
+import { getImageEditorState } from 'state/ui/editor/selectors';
 
 /**
  * Fetches the currently active theme of the supplied site
@@ -22,17 +22,17 @@ const ImageEditorData = React.createClass( {
 		rotate: React.PropTypes.number,
 		scaleX: React.PropTypes.number,
 		scaleY: React.PropTypes.number,
-		setEditorState: React.PropTypes.func.isRequired,
-		resetEditorState: React.PropTypes.func.isRequired
+		setImageEditorState: React.PropTypes.func.isRequired,
+		resetImageEditorState: React.PropTypes.func.isRequired
 	},
 
 	componentDidMount() {
-		this.props.resetEditorState();
+		this.props.resetImageEditorState();
 	},
 
 	componentWillReceiveProps( nextProps ) {
 		if ( ! nextProps.src || nextProps.src !== this.props.src ) {
-			this.props.resetEditorState();
+			this.props.resetImageEditorState();
 		}
 	},
 
@@ -46,6 +46,6 @@ const ImageEditorData = React.createClass( {
 } );
 
 export default connect(
-	( state, props ) => ( getEditorState( state ) ),
-	{ setEditorState, resetEditorState }
+	( state, props ) => ( getImageEditorState( state ) ),
+	{ setImageEditorState, resetImageEditorState }
 )( ImageEditorData );

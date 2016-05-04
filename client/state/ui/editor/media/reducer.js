@@ -6,7 +6,17 @@ import { combineReducers } from 'redux';
 /**
  * Internal dependencies
  */
-import { EDITOR_MEDIA_EDIT_ITEM_SET } from 'state/action-types';
+import {
+	EDITOR_MEDIA_EDIT_ITEM_SET,
+	IMAGE_EDITOR_STATE_CHANGE,
+	IMAGE_EDITOR_STATE_RESET
+} from 'state/action-types';
+
+export const defaultImageEditorState = {
+	rotate: 0,
+	scaleX: 1,
+	scaleY: 1
+};
 
 export function editItem( state = null, action ) {
 	switch ( action.type ) {
@@ -17,6 +27,18 @@ export function editItem( state = null, action ) {
 	return state;
 }
 
+export function imageEditor( state = defaultImageEditorState, action ) {
+	switch ( action.type ) {
+		case IMAGE_EDITOR_STATE_CHANGE:
+			return Object.assign( {}, state, action.state );
+		case IMAGE_EDITOR_STATE_RESET:
+			return Object.assign( {}, defaultImageEditorState );
+	}
+
+	return state;
+}
+
 export default combineReducers( {
-	editItem
+	editItem,
+	imageEditor
 } );

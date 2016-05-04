@@ -16,23 +16,23 @@ module.exports = React.createClass( {
 		rotate: React.PropTypes.number,
 		scaleX: React.PropTypes.number,
 		scaleY: React.PropTypes.number,
-		setEditorState: React.PropTypes.func
+		setImageEditorState: React.PropTypes.func
 	},
 
 	getDefaultProps: function () {
 		return {
-			setEditorState: noop
+			setImageEditorState: noop
 		};
 	},
 
 	rotate: function () {
 		var rotate = ( this.props.rotate - 90 ) % 360;
-		this.props.setEditorState( { rotate } );
+		this.props.setImageEditorState( { rotate } );
 	},
 
 	flip: function () {
 		var scaleX = -this.props.scaleX;
-		this.props.setEditorState( { scaleX } );
+		this.props.setImageEditorState( { scaleX } );
 	},
 
 	renderButtons: function () {

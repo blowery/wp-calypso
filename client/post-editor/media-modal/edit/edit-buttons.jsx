@@ -12,14 +12,14 @@ module.exports = React.createClass( {
 	displayName: 'MediaModalDetailEditButtons',
 
 	propTypes: {
-		resetEditorState: React.PropTypes.func,
+		resetImageEditorState: React.PropTypes.func,
 		onDone: React.PropTypes.func,
 		onCancel: React.PropTypes.func
 	},
 
 	getDefaultProps: function () {
 		return {
-			resetEditorState: noop,
+			resetImageEditorState: noop,
 			onDone: noop,
 			onCancel: noop
 		};
@@ -35,7 +35,7 @@ module.exports = React.createClass( {
 				</button>
 				<button
 					className="button"
-					onClick={ this.props.resetEditorState } >
+					onClick={ this.props.resetImageEditorState } >
 					{ this.translate( 'Reset' ) }
 				</button>
 				<button
