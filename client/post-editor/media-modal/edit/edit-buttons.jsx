@@ -12,6 +12,7 @@ module.exports = React.createClass( {
 	displayName: 'MediaModalDetailEditButtons',
 
 	propTypes: {
+		src: React.PropTypes.string,
 		resetImageEditorState: React.PropTypes.func,
 		onDone: React.PropTypes.func,
 		onCancel: React.PropTypes.func
@@ -39,6 +40,7 @@ module.exports = React.createClass( {
 					{ this.translate( 'Reset' ) }
 				</button>
 				<button
+					disabled={ this.props.src ? false : true }
 					className="button is-primary"
 					onClick={ this.props.onDone } >
 					{ this.translate(' Done ') }
