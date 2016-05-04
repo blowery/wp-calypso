@@ -77,6 +77,8 @@ module.exports = React.createClass( {
 		MediaActions.add( this.props.site.ID, file );
 	},
 
+	//TODO: the drop zone currently exists for presentation purposes,
+	//consider implementing the image open functionality fully or removing it
 	onFilesDrop: function ( files ) {
 		var file = files[0];
 
