@@ -31,7 +31,7 @@ const ImageEditorData = React.createClass( {
 	},
 
 	componentWillReceiveProps( nextProps ) {
-		if ( ! nextProps.src || nextProps.src != this.props.src ) {
+		if ( ! nextProps.src || nextProps.src !== this.props.src ) {
 			this.props.resetEditorState();
 		}
 	},

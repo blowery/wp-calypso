@@ -6,10 +6,10 @@ import { combineReducers } from 'redux';
 /**
  * Internal dependencies
  */
- import {
- 	IMAGE_EDITOR_STATE_CHANGE,
- 	IMAGE_EDITOR_STATE_RESET
- } from '../action-types';
+import {
+	IMAGE_EDITOR_STATE_CHANGE,
+	IMAGE_EDITOR_STATE_RESET
+} from '../action-types';
 
 export const defaultImageEditorState = {
 	rotate: 0,
