@@ -27,7 +27,7 @@ import ui from './ui/reducer';
 import comments from './comments/reducer';
 import googleAppsUsers from './google-apps-users/reducer';
 import reader from './reader/reducer';
-
+import domains from './domains/reducer';
 /**
  * Module variables
  */
@@ -51,7 +51,8 @@ export const reducer = combineReducers( {
 	ui,
 	comments,
 	googleAppsUsers,
-	reader
+	reader,
+	domains
 } );
 
 let middleware = [ thunkMiddleware ];
