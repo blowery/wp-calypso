@@ -1,15 +1,13 @@
+/* eslint-disable wpcalypso/i18n-no-variables */
+//disabled no variables rule error on canvas context translate() method
+
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	ReactDOM = require( 'react-dom' );
+import React from 'react';
+import ReactDom from 'react-dom';
 
-/**
- * Internal dependencies
- */
-var noop = require( 'lodash/noop' );
-
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'MediaModalDetailEditCanvas',
 
 	propTypes: {
@@ -19,28 +17,28 @@ module.exports = React.createClass( {
 		scaleY: React.PropTypes.number
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps() {
 		return {
 			rotate: 0,
 			scaleX: 1,
 			scaleY: 1
-		}
+		};
 	},
 
-	getInitialState: function () {
+	getInitialState() {
 		return {
 			canvasWidth: this.props.item ? this.props.item.width : 0,
 			canvasHeight: this.props.item ? this.props.item.height : 0
 		};
 	},
 
-	componentWillReceiveProps: function ( newProps ) {
+	componentWillReceiveProps( newProps ) {
 		if ( this.props.src !== newProps.src ) {
 			this.initImage( newProps.src );
 		}
 	},
 
-	componentDidMount: function () {
+	componentDidMount() {
 		if ( ! this.props.src ) {
 			return;
 		}
@@ -48,14 +46,14 @@ module.exports = React.createClass( {
 		this.initImage( this.props.src );
 	},
 
-	initImage: function ( src ) {
+	initImage( src ) {
 		this.image = new Image();
 		this.image.src = src;
 		this.image.onload = this.onLoadComplete;
 		this.image.onerror = this.onLoadComplete;
 	},
 
-	onLoadComplete: function ( event ) {
+	onLoadComplete( event ) {
 		if ( event.type !== 'load' ) {
 			return;
 		}
@@ -63,45 +61,43 @@ module.exports = React.createClass( {
 		this.drawImage();
 	},
 
-	componentDidUpdate: function () {
+	componentDidUpdate() {
 		this.drawImage();
 	},
 
-	toBlob: function ( callback ) {
-		var canvas = ReactDOM.findDOMNode( this.refs.canvas );
+	toBlob( callback ) {
+		var canvas = ReactDom.findDOMNode( this.refs.canvas );
 
-		canvas.toBlob( callback, "image/jpeg", 0.95 ); // JPEG at 95% quality
+		canvas.toBlob( callback, 'image/jpeg', 0.95 ); // JPEG at 95% quality
 	},
 
-	drawImage: function () {
-		var canvas, context;
-
+	drawImage() {
 		if ( ! this.image ) {
 			return;
 		}
 
 		if ( this.state.canvasWidth !== this.image.width ||
-			 this.state.canvasHeight !== this.image.height) {
-			this.setState({
+			this.state.canvasHeight !== this.image.height ) {
+			this.setState( {
 				canvasWidth: this.image.width,
 				canvasHeight: this.image.height
-			});
+			} );
 		}
 
-		canvas = ReactDOM.findDOMNode( this.refs.canvas );
-		context = canvas.getContext( '2d' );
+		const canvas = ReactDom.findDOMNode( this.refs.canvas ),
+			context = canvas.getContext( '2d' );
 
-		context.clearRect(0,0,canvas.width,canvas.height);
+		context.clearRect( 0, 0, canvas.width, canvas.height );
 		context.save();
-		context.translate( canvas.width/2, canvas.height/2 );
+		context.translate( canvas.width / 2, canvas.height / 2 );
 		context.scale( this.props.scaleX, this.props.scaleY );
-		context.rotate( this.props.rotate * Math.PI/180 );
-		context.drawImage( this.image, -this.image.width/2, -this.image.height/2 );
+		context.rotate( this.props.rotate * Math.PI / 180 );
+		context.drawImage( this.image, -this.image.width / 2, -this.image.height / 2 );
 		context.restore();
 	},
 
-	render: function () {
-		var rotatedMod = this.props.rotate % 180,
+	render() {
+		const rotatedMod = this.props.rotate % 180,
 			width = rotatedMod === 0 ? this.state.canvasWidth : this.state.canvasHeight,
 			height = rotatedMod === 0 ? this.state.canvasHeight : this.state.canvasWidth;
 
@@ -111,7 +107,7 @@ module.exports = React.createClass( {
 					ref="canvas"
 					className="editor-media-modal-edit__canvas"
 					width={ width }
-					height={ height }></canvas>
+					height={ height } />
 			</div>
 		);
 	}

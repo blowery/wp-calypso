@@ -1,14 +1,15 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	noop = require( 'lodash/noop' );
+import React from 'react';
+import noop from 'lodash/noop';
 
 /**
  * Internal dependencies
  */
+ import Button from 'components/button';
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'MediaModalDetailEditButtons',
 
 	propTypes: {
@@ -18,7 +19,7 @@ module.exports = React.createClass( {
 		onCancel: React.PropTypes.func
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps() {
 		return {
 			resetImageEditorState: noop,
 			onDone: noop,
@@ -26,25 +27,24 @@ module.exports = React.createClass( {
 		};
 	},
 
-	render: function() {
+	render() {
 		return (
 			<div className="editor-media-modal-edit__buttons">
-				<button
-					className="button cancel"
+				<Button
+					className="editor-media-modal-edit__buttons-cancel"
 					onClick={ this.props.onCancel }>
 					{ this.translate( 'Cancel' ) }
-				</button>
-				<button
-					className="button"
+				</Button>
+				<Button
 					onClick={ this.props.resetImageEditorState } >
 					{ this.translate( 'Reset' ) }
-				</button>
-				<button
-					disabled={ this.props.src ? false : true }
-					className="button is-primary"
+				</Button>
+				<Button
+					disabled={ ! this.props.src }
+					primary
 					onClick={ this.props.onDone } >
-					{ this.translate(' Done ') }
-				</button>
+					{ this.translate( ' Done ' ) }
+				</Button>
 			</div>
 		);
 	}

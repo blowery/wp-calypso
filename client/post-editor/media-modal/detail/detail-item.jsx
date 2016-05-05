@@ -14,6 +14,7 @@ var EditorMediaModalDetailFields = require( './detail-fields' ),
 	EditorMediaModalDetailPreviewVideo = require( './detail-preview-video' ),
 	EditorMediaModalDetailPreviewAudio = require( './detail-preview-audio' ),
 	EditorMediaModalDetailPreviewDocument = require( './detail-preview-document' ),
+	Button = require( 'components/button' ),
 	Gridicon = require( 'components/gridicon' ),
 	userCan = require( 'lib/site/utils' ).userCan,
 	MediaUtils = require( 'lib/media/utils' ),
@@ -43,29 +44,24 @@ module.exports = React.createClass( {
 	},
 
 	renderEditButton: function() {
-		var mimePrefix, Component;
-
-		if ( ! config.isEnabled( 'image-editor' ) ||
-			 ! userCan( 'upload_files', this.props.site ) ||
-			 ! this.props.item ) {
+		if ( ! config.isEnabled( 'post-editor/image-editor' ) ||
+			! userCan( 'upload_files', this.props.site ) ||
+			! this.props.item ) {
 			return;
 		}
 
-		mimePrefix = MediaUtils.getMimePrefix( this.props.item );
+		const mimePrefix = MediaUtils.getMimePrefix( this.props.item );
 
 		if ( 'image' !== mimePrefix ) {
 			return;
 		}
 
 		return (
-			<button
-				className="button editor-media-modal-detail__edit"
+			<Button
+				className="is-desktop editor-media-modal-detail__edit"
 				onClick={ this.props.onEdit }>
-				<Gridicon icon="pencil" size={ 36 } />
-				<span className="editor-media-modal-detail__edit-text">
-					{ this.translate( 'Edit Image' ) }
-				</span>
-			</button>
+				<Gridicon icon="pencil" size={ 36 } /> { this.translate( 'Edit Image' ) }
+			</Button>
 		);
 	},
 

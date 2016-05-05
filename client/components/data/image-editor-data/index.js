@@ -38,14 +38,16 @@ const ImageEditorData = React.createClass( {
 
 	render() {
 		const childProps = omit( this.props, 'children', 'className' );
-		const childrenWithProps = React.Children.map(this.props.children,
+		const childrenWithProps = React.Children.map( this.props.children,
 			( child ) => React.cloneElement( child, childProps ) );
 
-		return <div className={ this.props.className }>{ childrenWithProps }</div>
+		return (
+			<div className={ this.props.className }>{ childrenWithProps }</div>
+		);
 	}
 } );
 
 export default connect(
-	( state, props ) => ( getImageEditorState( state ) ),
+	( state ) => ( getImageEditorState( state ) ),
 	{ setImageEditorState, resetImageEditorState }
 )( ImageEditorData );

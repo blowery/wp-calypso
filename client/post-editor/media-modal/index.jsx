@@ -210,14 +210,14 @@ module.exports = React.createClass( {
 		PostStats.recordStat( 'media_explorer_upload' );
 		PostStats.recordEvent( 'Upload Media' );
 	},
-	
-	onAddAndEditImage: function () {
+
+	onAddAndEditImage: function() {
 		MediaActions.setLibrarySelectedItems( this.props.site.ID, [] );
 
 		this.setView( ModalViews.EDIT );
 	},
 
-	onImageEditDone: function () {
+	onImageEditDone: function() {
 		var item = this.props.mediaLibrarySelectedItems[ this.state.detailSelectedIndex ];
 
 		if ( item ) {

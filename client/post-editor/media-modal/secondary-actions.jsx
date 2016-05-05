@@ -95,11 +95,9 @@ const MediaModalSecondaryActions = React.createClass( {
 			} );
 		}
 
-		const canDeleteItems = ModalViews.EDIT !== activeView &&
-				selectedItems.length &&
-				every( selectedItems, ( item ) => {
-					return canUserDeleteItem( item, user, site );
-				} );
+		const canDeleteItems = selectedItems.length && every( selectedItems, ( item ) => {
+			return canUserDeleteItem( item, user, site );
+		} );
 
 		if ( ModalViews.GALLERY !== activeView && canDeleteItems ) {
 			buttons.push( {
@@ -177,8 +175,7 @@ const MediaModalSecondaryActions = React.createClass( {
 	},
 
 	renderPlanStorage() {
-		if ( this.props.selectedItems.length === 0 &&
-			 ModalViews.EDIT !== this.props.activeView ) {
+		if ( this.props.selectedItems.length === 0 ) {
 			const eventName = 'calypso_upgrade_nudge_impression';
 			const eventProperties = { cta_name: 'plan-media-storage' };
 			return (

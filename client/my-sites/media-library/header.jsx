@@ -9,6 +9,7 @@ const debug = _debug( 'calypso:media-library:header' );
  * Internal dependencies
  */
 import { isMobile } from 'lib/viewport';
+import Button from 'components/button';
 import FormRange from 'components/forms/range';
 import Gridicon from 'components/gridicon';
 import PopoverMenu from 'components/popover/menu';
@@ -121,16 +122,17 @@ export default React.createClass( {
 	},
 
 	renderUploadAndEditButton() {
-		if ( ! config.isEnabled( 'image-editor' ) ) {
+		if ( ! config.isEnabled( 'post-editor/image-editor' ) ) {
 			return;
 		}
 
 		return (
-			<button className="button is-desktop"
+			<Button
+				className="is-desktop"
 				onClick={ this.props.onAddAndEditImage } >
 				<Gridicon icon="pencil" />
 				{ this.translate( 'Add and edit image' ) }
-			</button>
+			</Button>
 		);
 	},
 

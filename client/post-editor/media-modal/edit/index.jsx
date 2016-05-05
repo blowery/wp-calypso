@@ -1,22 +1,22 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	noop = require( 'lodash/noop' ),
-	path = require( 'path' );
+import React from 'react';
+import noop from 'lodash/noop';
+import path from 'path';
 
 /**
  * Internal dependencies
  */
-var ImageEditorData = require( 'components/data/image-editor-data' ),
-	EditCanvas = require( './edit-canvas' ),
-	EditToolbar = require( './edit-toolbar' ),
-	EditButtons = require( './edit-buttons' ),
-	DropZone = require( 'components/drop-zone' ),
-	MediaActions = require( 'lib/media/actions' ),
-	MediaUtils = require( 'lib/media/utils' );
+import ImageEditorData from 'components/data/image-editor-data';
+import EditCanvas from './edit-canvas';
+import EditToolbar from './edit-toolbar';
+import EditButtons from './edit-buttons';
+import DropZone from 'components/drop-zone';
+import MediaActions from 'lib/media/actions';
+import MediaUtils from 'lib/media/utils';
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'MediaModalDetailEdit',
 
 	propTypes: {
@@ -27,20 +27,16 @@ module.exports = React.createClass( {
 		onImageEditDone: React.PropTypes.func
 	},
 
-	getDefaultProps: function() {
+	getDefaultProps() {
 		return {
 			selectedIndex: 0,
 			onImageEdited: noop,
 			onImageEditDone: noop
-		}
+		};
 	},
 
-	getInitialState: function() {
-		return this.getDefaultState( this.props );
-	},
-
-	getDefaultState: function ( props ) {
-		var src,
+	getInitialState() {
+		let src,
 			fileName = 'default';
 
 		if ( this.props.items && this.props.items[ this.props.selectedIndex ] ) {
@@ -48,18 +44,18 @@ module.exports = React.createClass( {
 				photon: this.props.site && ! this.props.site.is_private
 			} );
 
-			fileName = path.basename(src);
+			fileName = path.basename( src );
 		}
 
-		return  {
+		return {
 			src,
 			fileName
 		};
 	},
 
-	onDone: function () {
+	onDone() {
 		try {
-			var canvasComponent = this.refs.editCanvas;
+			const canvasComponent = this.refs.editCanvas;
 			canvasComponent.toBlob( this.onImageExtracted );
 		} catch ( e ) {
 			console.error( e );
@@ -68,8 +64,8 @@ module.exports = React.createClass( {
 		this.props.onImageEditDone();
 	},
 
-	onImageExtracted: function ( blob ) {
-		var file, fileName = this.state.fileName;
+	onImageExtracted( blob ) {
+		let file, fileName = this.state.fileName;
 
 		fileName = fileName.replace( /\.[^.]+$/, '' ) + '.jpg';
 		file = new File( [ blob ], fileName );
@@ -79,13 +75,13 @@ module.exports = React.createClass( {
 
 	//TODO: the drop zone currently exists for presentation purposes,
 	//consider implementing the image open functionality fully or removing it
-	onFilesDrop: function ( files ) {
-		var file = files[0];
+	onFilesDrop: function( files ) {
+		const file = files[0];
 
-		this.setState({
+		this.setState( {
 			fileName: file.name,
 			src: URL.createObjectURL( file )
-		});
+		} );
 	},
 
 	isValidTransfer: function( transfer ) {
@@ -111,7 +107,7 @@ module.exports = React.createClass( {
 		return ! transfer.types || -1 !== Array.prototype.indexOf.call( transfer.types, 'Files' );
 	},
 
-	render: function() {
+	render() {
 		return (
 			<div className="editor-media-modal-edit">
 				<figure>

@@ -1,15 +1,15 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	noop = require( 'lodash/noop' );
+import React from 'react';
+import noop from 'lodash/noop';
 
 /**
  * Internal dependencies
  */
-var Gridicon = require( 'components/gridicon' );
+import Gridicon from 'components/gridicon';
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'MediaModalDetailEditToolbar',
 
 	propTypes: {
@@ -19,41 +19,39 @@ module.exports = React.createClass( {
 		setImageEditorState: React.PropTypes.func
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps() {
 		return {
 			setImageEditorState: noop
 		};
 	},
 
-	rotate: function () {
-		var rotate = ( this.props.rotate - 90 ) % 360;
+	rotate() {
+		const rotate = ( this.props.rotate - 90 ) % 360;
 		this.props.setImageEditorState( { rotate } );
 	},
 
-	flip: function () {
-		var scaleX = -this.props.scaleX;
+	flip() {
+		const scaleX = -this.props.scaleX;
 		this.props.setImageEditorState( { scaleX } );
 	},
 
-	renderButtons: function () {
-		const buttons = [ {
-			tool: 'rotate',
-			icon: 'rotate',
-			text: this.translate( 'Rotate' ),
-			onClick: this.rotate
-		},/* {
-			tool: 'layout',
-			icon: 'layout',
-			text: this.translate( 'Aspect' ),
-			onClick: noop
-		}, */{
-			tool: 'flip-vertical',
-			icon: 'flip-vertical',
-			text: this.translate( 'Flip' ),
-			onClick: this.flip
-		} ];
+	renderButtons() {
+		const buttons = [
+			{
+				tool: 'rotate',
+				icon: 'rotate',
+				text: this.translate( 'Rotate' ),
+				onClick: this.rotate
+			},
+			{
+				tool: 'flip-vertical',
+				icon: 'flip-vertical',
+				text: this.translate( 'Flip' ),
+				onClick: this.flip
+			}
+		];
 
-		return buttons.map( function ( button ) {
+		return buttons.map( function( button ) {
 			return (
 				<button
 					key={ 'edit-toolbar-' + button.tool }
@@ -64,10 +62,10 @@ module.exports = React.createClass( {
 					<span>{ button.text }</span>
 				</button>
 			);
-		}, this )
+		}, this );
 	},
 
-	render: function() {
+	render() {
 		return (
 			<div className="editor-media-modal-edit__toolbar">
 				{ this.renderButtons() }
