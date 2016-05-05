@@ -54,14 +54,16 @@ export default React.createClass( {
 	},
 
 	onDone() {
+		//TODO: this exists to handle cross-origin error - at the moment
+		//the error prevents editing of the images that have been already
+		//uploaded. Consider removing this once the cors headers are added to
+		//the image responses
 		try {
 			const canvasComponent = this.refs.editCanvas;
 			canvasComponent.toBlob( this.onImageExtracted );
-		} catch ( e ) {
-			console.error( e );
+		} finally {
+			this.props.onImageEditDone();
 		}
-
-		this.props.onImageEditDone();
 	},
 
 	onImageExtracted( blob ) {
