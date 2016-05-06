@@ -20,7 +20,7 @@ var MediaLibrary = require( 'my-sites/media-library' ),
 	MediaModalSecondaryActions = require( './secondary-actions' ),
 	MediaModalDetail = require( './detail' ),
 	MediaModalGallery = require( './gallery' ),
-	MediaModalEdit = require( './edit' ),
+	MediaModalImageEditor = require( './image-editor' ),
 	MediaActions = require( 'lib/media/actions' ),
 	MediaUtils = require( 'lib/media/utils' ),
 	Dialog = require( 'components/dialog' ),
@@ -147,7 +147,7 @@ module.exports = React.createClass( {
 			case ModalViews.LIST: stat = 'view_list'; break;
 			case ModalViews.DETAIL: stat = 'view_detail'; break;
 			case ModalViews.GALLERY: stat = 'view_gallery'; break;
-			case ModalViews.EDIT: stat = 'view_edit'; break;
+			case ModalViews.IMAGE_EDITOR: stat = 'view_edit'; break;
 		}
 
 		if ( stat ) {
@@ -214,7 +214,7 @@ module.exports = React.createClass( {
 	onAddAndEditImage: function() {
 		MediaActions.setLibrarySelectedItems( this.props.site.ID, [] );
 
-		this.setView( ModalViews.EDIT );
+		this.setView( ModalViews.IMAGE_EDITOR );
 	},
 
 	onImageEditDone: function() {
@@ -293,7 +293,7 @@ module.exports = React.createClass( {
 			selectedItems = this.props.mediaLibrarySelectedItems,
 			buttons;
 
-		if ( ModalViews.EDIT === this.state.activeView ) {
+		if ( ModalViews.IMAGE_EDITOR === this.state.activeView ) {
 			return;
 		}
 
@@ -370,7 +370,7 @@ module.exports = React.createClass( {
 						selectedIndex={ this.state.detailSelectedIndex }
 						onSelectedIndexChange={ this.setDetailSelectedIndex }
 						onChangeView={ this.setView }
-						onEdit={ this.setView.bind( this, ModalViews.EDIT ) } />
+						onEdit={ this.setView.bind( this, ModalViews.IMAGE_EDITOR ) } />
 				);
 				break;
 
@@ -385,9 +385,9 @@ module.exports = React.createClass( {
 				);
 				break;
 
-			case ModalViews.EDIT:
+			case ModalViews.IMAGE_EDITOR:
 				content = (
-					<MediaModalEdit
+					<MediaModalImageEditor
 						site={ this.props.site }
 						items={ this.props.mediaLibrarySelectedItems }
 						selectedIndex={ this.state.detailSelectedIndex }

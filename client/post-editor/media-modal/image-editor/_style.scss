@@ -1,8 +1,12 @@
-.editor-media-modal-edit__content {
+.editor-media-modal-image-editor__content {
+	flex-direction: column;
+	position: absolute;
+		top: 0px;
+		bottom: 0px;
 	background: darken($gray, 52%);
 }
 
-.editor-media-modal-edit__toolbar {
+.editor-media-modal-image-editor__toolbar {
 	flex: 1;
 	position: relative;
 	bottom: 0;
@@ -10,7 +14,7 @@
 	text-align: center;
 }
 
-.editor-media-modal-edit__toolbar-button {
+.editor-media-modal-image-editor__toolbar-button {
 	background: $transparent;
 	border: none;
 	color: $white;
@@ -18,17 +22,17 @@
 	cursor: pointer;
 }
 
-.editor-media-modal-edit__toolbar-button:hover {
+.editor-media-modal-image-editor__toolbar-button:hover {
 	color: $gray;
 }
 
-.editor-media-modal-edit__canvas-container {
+.editor-media-modal-image-editor__canvas-container {
 	flex: 10;
 	position: relative;
 	width: 100%;
 }
 
-.editor-media-modal-edit__canvas {
+.editor-media-modal-image-editor__canvas {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -39,16 +43,16 @@
 	transform: translate( -50%, -50% );
 }
 
-.editor-media-modal-edit__buttons {
+.editor-media-modal-image-editor__buttons {
 	border-top: 1px solid $gray-dark;
 	padding: 16px;
 	text-align: right;
 }
 
-.editor-media-modal-edit__buttons button {
+.editor-media-modal-image-editor__buttons button {
 	margin-left: 10px;
 }
 
-.editor-media-modal-edit__buttons-cancel {
+.editor-media-modal-image-editor__buttons-cancel {
 	float: left;
 }

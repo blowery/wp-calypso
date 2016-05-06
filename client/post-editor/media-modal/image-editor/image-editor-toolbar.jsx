@@ -10,7 +10,7 @@ import noop from 'lodash/noop';
 import Gridicon from 'components/gridicon';
 
 export default React.createClass( {
-	displayName: 'MediaModalDetailEditToolbar',
+	displayName: 'MediaModalImageEditorToolbar',
 
 	propTypes: {
 		rotate: React.PropTypes.number,
@@ -55,7 +55,7 @@ export default React.createClass( {
 			return (
 				<button
 					key={ 'edit-toolbar-' + button.tool }
-					className={ 'editor-media-modal-edit__toolbar-button' }
+					className={ 'editor-media-modal-image-editor__toolbar-button' }
 					onClick={ button.onClick } >
 					<Gridicon icon={ button.icon } size={ 36 } />
 					<br />
@@ -67,7 +67,7 @@ export default React.createClass( {
 
 	render() {
 		return (
-			<div className="editor-media-modal-edit__toolbar">
+			<div className="editor-media-modal-image-editor__toolbar">
 				{ this.renderButtons() }
 			</div>
 		);

@@ -8,7 +8,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 
 export default React.createClass( {
-	displayName: 'MediaModalDetailEditCanvas',
+	displayName: 'MediaModalImageEditorCanvas',
 
 	propTypes: {
 		src: React.PropTypes.string,
@@ -102,10 +102,10 @@ export default React.createClass( {
 			height = rotatedMod === 0 ? this.state.canvasHeight : this.state.canvasWidth;
 
 		return (
-			<div className="editor-media-modal-edit__canvas-container">
+			<div className="editor-media-modal-image-editor__canvas-container">
 				<canvas
 					ref="canvas"
-					className="editor-media-modal-edit__canvas"
+					className="editor-media-modal-image-editor__canvas"
 					width={ width }
 					height={ height } />
 			</div>

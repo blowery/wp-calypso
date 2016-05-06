@@ -9,15 +9,15 @@ import path from 'path';
  * Internal dependencies
  */
 import ImageEditorData from 'components/data/image-editor-data';
-import EditCanvas from './edit-canvas';
-import EditToolbar from './edit-toolbar';
-import EditButtons from './edit-buttons';
+import EditCanvas from './image-editor-canvas';
+import EditToolbar from './image-editor-toolbar';
+import EditButtons from './image-editor-buttons';
 import DropZone from 'components/drop-zone';
 import MediaActions from 'lib/media/actions';
 import MediaUtils from 'lib/media/utils';
 
 export default React.createClass( {
-	displayName: 'MediaModalDetailEdit',
+	displayName: 'MediaModalImageEditor',
 
 	propTypes: {
 		site: React.PropTypes.object,
@@ -111,10 +111,10 @@ export default React.createClass( {
 
 	render() {
 		return (
-			<div className="editor-media-modal-edit">
+			<div className="editor-media-modal-image-editor">
 				<figure>
 					<ImageEditorData
-						className="editor-media-modal-edit__content editor-media-modal__content"
+						className="editor-media-modal-image-editor__content editor-media-modal__content"
 						src={ this.state.src } >
 						<DropZone
 							fullScreen={ true }

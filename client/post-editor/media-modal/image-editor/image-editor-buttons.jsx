@@ -10,7 +10,7 @@ import noop from 'lodash/noop';
  import Button from 'components/button';
 
 export default React.createClass( {
-	displayName: 'MediaModalDetailEditButtons',
+	displayName: 'MediaModalImageEditorButtons',
 
 	propTypes: {
 		src: React.PropTypes.string,
@@ -29,9 +29,9 @@ export default React.createClass( {
 
 	render() {
 		return (
-			<div className="editor-media-modal-edit__buttons">
+			<div className="editor-media-modal-image-editor__buttons">
 				<Button
-					className="editor-media-modal-edit__buttons-cancel"
+					className="editor-media-modal-image-editor__buttons-cancel"
 					onClick={ this.props.onCancel }>
 					{ this.translate( 'Cancel' ) }
 				</Button>

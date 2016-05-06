@@ -7,5 +7,5 @@ export const Views = keyMirror( {
 	LIST: null,
 	DETAIL: null,
 	GALLERY: null,
-	EDIT: null
+	IMAGE_EDITOR: null
 } );
