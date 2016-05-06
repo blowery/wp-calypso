@@ -6,8 +6,14 @@
  */
 import React from 'react';
 import ReactDom from 'react-dom';
+import { connect } from 'react-redux';
 
-export default React.createClass( {
+/**
+ * Internal dependencies
+ */
+import { getImageEditorState } from 'state/ui/editor/selectors';
+
+const MediaModalImageEditorCanvas = React.createClass( {
 	displayName: 'MediaModalImageEditorCanvas',
 
 	propTypes: {
@@ -112,3 +118,10 @@ export default React.createClass( {
 		);
 	}
 } );
+
+export default connect(
+	( state ) => ( getImageEditorState( state ) ),
+	null,
+	null,
+	{ withRef: true }
+)( MediaModalImageEditorCanvas );

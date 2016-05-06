@@ -2,18 +2,22 @@
  * External dependencies
  */
 import React from 'react';
+import { connect } from 'react-redux';
 import noop from 'lodash/noop';
 
 /**
  * Internal dependencies
  */
  import Button from 'components/button';
+ import { resetImageEditorState } from 'state/ui/editor/media/actions';
+ import { getImageEditorState } from 'state/ui/editor/selectors';
 
-export default React.createClass( {
+const MediaModalImageEditorButtons = React.createClass( {
 	displayName: 'MediaModalImageEditorButtons',
 
 	propTypes: {
 		src: React.PropTypes.string,
+		changed: React.PropTypes.bool,
 		resetImageEditorState: React.PropTypes.func,
 		onDone: React.PropTypes.func,
 		onCancel: React.PropTypes.func
@@ -21,6 +25,8 @@ export default React.createClass( {
 
 	getDefaultProps() {
 		return {
+			src: '',
+			changed: false,
 			resetImageEditorState: noop,
 			onDone: noop,
 			onCancel: noop
@@ -36,6 +42,7 @@ export default React.createClass( {
 					{ this.translate( 'Cancel' ) }
 				</Button>
 				<Button
+					disabled={ ! this.props.changed }
 					onClick={ this.props.resetImageEditorState } >
 					{ this.translate( 'Reset' ) }
 				</Button>
@@ -49,3 +56,8 @@ export default React.createClass( {
 		);
 	}
 } );
+
+export default connect(
+	( state ) => ( getImageEditorState( state ) ),
+	{ resetImageEditorState }
+)( MediaModalImageEditorButtons );

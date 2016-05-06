@@ -2,40 +2,42 @@
  * External dependencies
  */
 import React from 'react';
+import { connect } from 'react-redux';
 import noop from 'lodash/noop';
 import path from 'path';
 
 /**
  * Internal dependencies
  */
-import ImageEditorData from 'components/data/image-editor-data';
 import EditCanvas from './image-editor-canvas';
 import EditToolbar from './image-editor-toolbar';
 import EditButtons from './image-editor-buttons';
 import DropZone from 'components/drop-zone';
 import MediaActions from 'lib/media/actions';
 import MediaUtils from 'lib/media/utils';
+import { resetImageEditorState, setImageEditorFileInfo } from 'state/ui/editor/media/actions';
+import { getImageEditorState } from 'state/ui/editor/selectors';
 
-export default React.createClass( {
+const MediaModalImageEditor = React.createClass( {
 	displayName: 'MediaModalImageEditor',
 
 	propTypes: {
 		site: React.PropTypes.object,
 		items: React.PropTypes.array,
 		selectedIndex: React.PropTypes.number,
-		onImageEdited: React.PropTypes.func,
-		onImageEditDone: React.PropTypes.func
+		fileName: React.PropTypes.string,
+		setImageEditorFileInfo: React.PropTypes.func,
+		onImageEditorClose: React.PropTypes.func
 	},
 
 	getDefaultProps() {
 		return {
 			selectedIndex: 0,
-			onImageEdited: noop,
-			onImageEditDone: noop
+			onImageEditorClose: noop
 		};
 	},
 
-	getInitialState() {
+	componentDidMount() {
 		let src,
 			fileName = 'default';
 
@@ -47,10 +49,8 @@ export default React.createClass( {
 			fileName = path.basename( src );
 		}
 
-		return {
-			src,
-			fileName
-		};
+		this.props.resetImageEditorState();
+		this.props.setImageEditorFileInfo( src, fileName );
 	},
 
 	onDone() {
@@ -59,15 +59,15 @@ export default React.createClass( {
 		//uploaded. Consider removing this once the cors headers are added to
 		//the image responses
 		try {
-			const canvasComponent = this.refs.editCanvas;
+			const canvasComponent = this.refs.editCanvas.getWrappedInstance();
 			canvasComponent.toBlob( this.onImageExtracted );
 		} finally {
-			this.props.onImageEditDone();
+			this.props.onImageEditorClose();
 		}
 	},
 
 	onImageExtracted( blob ) {
-		let file, fileName = this.state.fileName;
+		let file, fileName = this.props.fileName;
 
 		fileName = fileName.replace( /\.[^.]+$/, '' ) + '.jpg';
 		file = new File( [ blob ], fileName );
@@ -80,10 +80,7 @@ export default React.createClass( {
 	onFilesDrop: function( files ) {
 		const file = files[0];
 
-		this.setState( {
-			fileName: file.name,
-			src: URL.createObjectURL( file )
-		} );
+		this.props.setImageEditorFileInfo( URL.createObjectURL( file ), file.name );
 	},
 
 	isValidTransfer: function( transfer ) {
@@ -113,9 +110,7 @@ export default React.createClass( {
 		return (
 			<div className="editor-media-modal-image-editor">
 				<figure>
-					<ImageEditorData
-						className="editor-media-modal-image-editor__content editor-media-modal__content"
-						src={ this.state.src } >
+					<div className="editor-media-modal-image-editor__content editor-media-modal__content" >
 						<DropZone
 							fullScreen={ true }
 							onVerifyValidTransfer={ this.isValidTransfer }
@@ -123,11 +118,16 @@ export default React.createClass( {
 						<EditCanvas ref="editCanvas" />
 						<EditToolbar />
 						<EditButtons
-							onCancel={ this.props.onImageEditDone }
+							onCancel={ this.props.onImageEditorClose }
 							onDone={ this.onDone } />
-					</ImageEditorData>
+					</div>
 				</figure>
 			</div>
 		);
 	}
 } );
+
+export default connect(
+	( state ) => ( getImageEditorState( state ) ),
+	{ resetImageEditorState, setImageEditorFileInfo }
+)( MediaModalImageEditor );

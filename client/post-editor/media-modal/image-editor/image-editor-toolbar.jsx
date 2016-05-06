@@ -2,37 +2,36 @@
  * External dependencies
  */
 import React from 'react';
+import { connect } from 'react-redux';
 import noop from 'lodash/noop';
 
 /**
  * Internal dependencies
  */
 import Gridicon from 'components/gridicon';
+import { imageEditorRotate, imageEditorFlip } from 'state/ui/editor/media/actions';
 
-export default React.createClass( {
+const MediaModalImageEditorToolbar = React.createClass( {
 	displayName: 'MediaModalImageEditorToolbar',
 
 	propTypes: {
-		rotate: React.PropTypes.number,
-		scaleX: React.PropTypes.number,
-		scaleY: React.PropTypes.number,
-		setImageEditorState: React.PropTypes.func
+		imageEditorRotate: React.PropTypes.func,
+		setImageEditorScale: React.PropTypes.func
 	},
 
 	getDefaultProps() {
 		return {
-			setImageEditorState: noop
+			imageEditorRotate: noop,
+			setImageEditorScale: noop
 		};
 	},
 
 	rotate() {
-		const rotate = ( this.props.rotate - 90 ) % 360;
-		this.props.setImageEditorState( { rotate } );
+		this.props.imageEditorRotate( -90 );
 	},
 
 	flip() {
-		const scaleX = -this.props.scaleX;
-		this.props.setImageEditorState( { scaleX } );
+		this.props.imageEditorFlip();
 	},
 
 	renderButtons() {
@@ -73,3 +72,8 @@ export default React.createClass( {
 		);
 	}
 } );
+
+export default connect(
+	null,
+	{ imageEditorRotate, imageEditorFlip }
+)( MediaModalImageEditorToolbar );

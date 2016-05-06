@@ -217,7 +217,7 @@ module.exports = React.createClass( {
 		this.setView( ModalViews.IMAGE_EDITOR );
 	},
 
-	onImageEditDone: function() {
+	onImageEditorClose: function() {
 		var item = this.props.mediaLibrarySelectedItems[ this.state.detailSelectedIndex ];
 
 		if ( item ) {
@@ -391,7 +391,7 @@ module.exports = React.createClass( {
 						site={ this.props.site }
 						items={ this.props.mediaLibrarySelectedItems }
 						selectedIndex={ this.state.detailSelectedIndex }
-						onImageEditDone={ this.onImageEditDone } />
+						onImageEditorClose={ this.onImageEditorClose } />
 				);
 				break;
 		}
