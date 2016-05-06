@@ -19,7 +19,6 @@ import {
 	JETPACK_CONNECT_CREATE_ACCOUNT_RECEIVE,
 	JETPACK_CONNECT_REDIRECT,
 	JETPACK_CONNECT_REDIRECT_WP_ADMIN,
-	JETPACK_CONNECT_STORE_SESSION,
 	SERIALIZE,
 	DESERIALIZE
 } from 'state/action-types';
@@ -34,11 +33,11 @@ const defaultAuthorizeState = {
 
 export function jetpackConnectSessions( state = {}, action ) {
 	switch ( action.type ) {
-		case JETPACK_CONNECT_STORE_SESSION:
+		case JETPACK_CONNECT_CHECK_URL:
 			const noProtocolUrl = action.url.replace( /.*?:\/\//g, '' );
-			return Object.assign( {}, state, { [ noProtocolUrl ]: ( new Date() ).getTime() } );
-		case SERIALIZE:
+			return Object.assign( {}, state, { [ noProtocolUrl ]: Date.now() } );
 		case DESERIALIZE:
+		case SERIALIZE:
 			return state;
 	}
 	return state;
