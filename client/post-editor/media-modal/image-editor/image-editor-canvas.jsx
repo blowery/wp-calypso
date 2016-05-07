@@ -16,14 +16,14 @@ const MediaModalImageEditorCanvas = React.createClass( {
 
 	propTypes: {
 		src: React.PropTypes.string,
-		rotate: React.PropTypes.number,
+		degrees: React.PropTypes.number,
 		scaleX: React.PropTypes.number,
 		scaleY: React.PropTypes.number
 	},
 
 	getDefaultProps() {
 		return {
-			rotate: 0,
+			degrees: 0,
 			scaleX: 1,
 			scaleY: 1
 		};
@@ -100,13 +100,13 @@ const MediaModalImageEditorCanvas = React.createClass( {
 		context.setTransform( 1, 0, 0, 1, canvas.width / 2, canvas.height / 2 );
 
 		context.scale( this.props.scaleX, this.props.scaleY );
-		context.rotate( this.props.rotate * Math.PI / 180 );
+		context.rotate( this.props.degrees * Math.PI / 180 );
 		context.drawImage( this.image, -this.image.width / 2, -this.image.height / 2 );
 		context.restore();
 	},
 
 	render() {
-		const rotatedMod = this.props.rotate % 180,
+		const rotatedMod = this.props.degrees % 180,
 			width = rotatedMod === 0 ? this.state.canvasWidth : this.state.canvasHeight,
 			height = rotatedMod === 0 ? this.state.canvasHeight : this.state.canvasWidth;
 

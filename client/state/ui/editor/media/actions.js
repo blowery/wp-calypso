@@ -3,8 +3,8 @@
  */
 import {
 	EDITOR_MEDIA_EDIT_ITEM_SET,
-	IMAGE_EDITOR_ROTATE,
-	IMAGE_EDITOR_SCALE,
+	IMAGE_EDITOR_ROTATE_COUNTERCLOCKWISE,
+	IMAGE_EDITOR_FLIP,
 	IMAGE_EDITOR_SET_FILE_INFO,
 	IMAGE_EDITOR_STATE_RESET
 } from 'state/action-types';
@@ -22,28 +22,15 @@ export function resetImageEditorState() {
 	};
 }
 
-export function imageEditorRotate( degrees ) {
-	return ( dispatch, getState ) => {
-		const state = getState(),
-			imageEditorState = state.ui.editor.media.imageEditor;
-
-		dispatch( {
-			type: IMAGE_EDITOR_ROTATE,
-			degrees: ( imageEditorState.rotate + degrees ) % 360
-		} );
+export function imageEditorRotate() {
+	return {
+		type: IMAGE_EDITOR_ROTATE_COUNTERCLOCKWISE,
 	};
 }
 
 export function imageEditorFlip() {
-	return ( dispatch, getState ) => {
-		const state = getState(),
-			imageEditorState = state.ui.editor.media.imageEditor;
-
-		dispatch( {
-			type: IMAGE_EDITOR_SCALE,
-			scaleX: -imageEditorState.scaleX,
-			scaleY: imageEditorState.scaleY
-		} );
+	return {
+		type: IMAGE_EDITOR_FLIP
 	};
 }
 
