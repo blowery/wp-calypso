@@ -218,7 +218,7 @@ module.exports = React.createClass( {
 	},
 
 	onImageEditorClose: function() {
-		var item = this.props.mediaLibrarySelectedItems[ this.state.detailSelectedIndex ];
+		const item = this.props.mediaLibrarySelectedItems[ this.state.detailSelectedIndex ];
 
 		if ( item ) {
 			this.setView( ModalViews.DETAIL );

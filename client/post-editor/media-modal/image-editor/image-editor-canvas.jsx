@@ -1,6 +1,3 @@
-/* eslint-disable wpcalypso/i18n-no-variables */
-//disabled no variables rule error on canvas context translate() method
-
 /**
  * External dependencies
  */
@@ -11,6 +8,7 @@ import { connect } from 'react-redux';
 /**
  * Internal dependencies
  */
+import MediaUtils from 'lib/media/utils';
 import { getImageEditorState } from 'state/ui/editor/selectors';
 
 const MediaModalImageEditorCanvas = React.createClass( {
@@ -72,9 +70,10 @@ const MediaModalImageEditorCanvas = React.createClass( {
 	},
 
 	toBlob( callback ) {
-		var canvas = ReactDom.findDOMNode( this.refs.canvas );
+		const canvas = ReactDom.findDOMNode( this.refs.canvas );
 
-		canvas.toBlob( callback, 'image/jpeg', 0.95 ); // JPEG at 95% quality
+		//TODO: save in the same format as the input image
+		MediaUtils.canvasToBlob( canvas, callback, 'image/jpeg', 0.95 );
 	},
 
 	drawImage() {
@@ -95,7 +94,11 @@ const MediaModalImageEditorCanvas = React.createClass( {
 
 		context.clearRect( 0, 0, canvas.width, canvas.height );
 		context.save();
-		context.translate( canvas.width / 2, canvas.height / 2 );
+
+		//setTransform() could be replaced with translate(), but it leads to
+		//a false positive warning from eslint rule wpcalypso/i18n-no-variables
+		context.setTransform( 1, 0, 0, 1, canvas.width / 2, canvas.height / 2 );
+
 		context.scale( this.props.scaleX, this.props.scaleY );
 		context.rotate( this.props.rotate * Math.PI / 180 );
 		context.drawImage( this.image, -this.image.width / 2, -this.image.height / 2 );
