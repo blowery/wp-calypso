@@ -8,9 +8,14 @@ import noop from 'lodash/noop';
 /**
  * Internal dependencies
  */
- import Button from 'components/button';
- import { resetImageEditorState } from 'state/ui/editor/media/actions';
- import { getImageEditorState } from 'state/ui/editor/selectors';
+import Button from 'components/button';
+import {
+	resetImageEditorState
+} from 'state/ui/editor/media/imageEditor/actions';
+import {
+	getImageEditorFileInfo,
+	imageEditorHasChanges
+} from 'state/ui/editor/media/imageEditor/selectors';
 
 const MediaModalImageEditorButtons = React.createClass( {
 	displayName: 'MediaModalImageEditorButtons',
@@ -58,6 +63,14 @@ const MediaModalImageEditorButtons = React.createClass( {
 } );
 
 export default connect(
-	( state ) => ( getImageEditorState( state ) ),
+	( state ) => {
+		const { src } = getImageEditorFileInfo( state ),
+			hasChanges = imageEditorHasChanges( state );
+
+		return {
+			src,
+			hasChanges
+		};
+	},
 	{ resetImageEditorState }
 )( MediaModalImageEditorButtons );

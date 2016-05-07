@@ -9,7 +9,10 @@ import { connect } from 'react-redux';
  * Internal dependencies
  */
 import MediaUtils from 'lib/media/utils';
-import { getImageEditorState } from 'state/ui/editor/selectors';
+import {
+	getImageEditorTransform,
+	getImageEditorFileInfo
+} from 'state/ui/editor/media/imageEditor/selectors';
 
 const MediaModalImageEditorCanvas = React.createClass( {
 	displayName: 'MediaModalImageEditorCanvas',
@@ -123,7 +126,17 @@ const MediaModalImageEditorCanvas = React.createClass( {
 } );
 
 export default connect(
-	( state ) => ( getImageEditorState( state ) ),
+	( state ) => {
+		const { degrees, scaleX, scaleY } = getImageEditorTransform( state ),
+			{ src } = getImageEditorFileInfo( state );
+
+		return {
+			src,
+			degrees,
+			scaleX,
+			scaleY
+		};
+	},
 	null,
 	null,
 	{ withRef: true }

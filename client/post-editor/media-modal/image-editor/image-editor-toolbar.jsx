@@ -9,7 +9,10 @@ import noop from 'lodash/noop';
  * Internal dependencies
  */
 import Gridicon from 'components/gridicon';
-import { imageEditorRotate, imageEditorFlip } from 'state/ui/editor/media/actions';
+import {
+	imageEditorRotate,
+	imageEditorFlip
+} from 'state/ui/editor/media/imageEditor/actions';
 
 const MediaModalImageEditorToolbar = React.createClass( {
 	displayName: 'MediaModalImageEditorToolbar',

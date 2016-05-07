@@ -71,15 +71,3 @@ export function getEditorPath( state, siteId, postId, defaultType = 'post' ) {
 
 	return path;
 }
-
-/**
- * Returns an object representing the image editor state
- *
- * @param  {Object}  state Global state tree
- * @return {Object}  image editor state
- *
- * @see client/sections
- */
-export function getImageEditorState( state ) {
-	return state.ui.editor.media.imageEditor;
-}

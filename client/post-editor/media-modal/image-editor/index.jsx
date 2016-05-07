@@ -15,8 +15,13 @@ import EditButtons from './image-editor-buttons';
 import DropZone from 'components/drop-zone';
 import MediaActions from 'lib/media/actions';
 import MediaUtils from 'lib/media/utils';
-import { resetImageEditorState, setImageEditorFileInfo } from 'state/ui/editor/media/actions';
-import { getImageEditorState } from 'state/ui/editor/selectors';
+import {
+	resetImageEditorState,
+	setImageEditorFileInfo
+} from 'state/ui/editor/media/imageEditor/actions';
+import {
+	getImageEditorFileInfo
+} from 'state/ui/editor/media/imageEditor/selectors';
 
 const MediaModalImageEditor = React.createClass( {
 	displayName: 'MediaModalImageEditor',
@@ -25,6 +30,7 @@ const MediaModalImageEditor = React.createClass( {
 		site: React.PropTypes.object,
 		items: React.PropTypes.array,
 		selectedIndex: React.PropTypes.number,
+		src: React.PropTypes.string,
 		fileName: React.PropTypes.string,
 		setImageEditorFileInfo: React.PropTypes.func,
 		onImageEditorClose: React.PropTypes.func
@@ -128,6 +134,6 @@ const MediaModalImageEditor = React.createClass( {
 } );
 
 export default connect(
-	( state ) => ( getImageEditorState( state ) ),
+	( state ) => ( getImageEditorFileInfo( state ) ),
 	{ resetImageEditorState, setImageEditorFileInfo }
 )( MediaModalImageEditor );
