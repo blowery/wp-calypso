@@ -53,14 +53,6 @@ const ThemeSheet = React.createClass( {
 		this.props.dispatch( signup( this.props ) );
 	},
 
-	onDownloadButtonClick() {
-		if ( this.props.download ) {
-			window.open( this.props.download );
-		} else {
-			window.open( 'http://wordpress.org/themes/' + this.props.id );
-		}
-	},
-
 	getContentElement( section ) {
 		return {
 			details: <div dangerouslySetInnerHTML={ { __html: this.props.descriptionLong } } />,

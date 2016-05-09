@@ -21,8 +21,9 @@ var ThemeDownloadCard = React.createClass( {
 	},
 
 	render() {
-		var downloadURI = this.props.href || ( 'https://downloads.wordpress.org/theme/' + this.props.theme + '.zip' );
-		var downloadText = i18n.translate( 'This theme is available for download to be used on your {{a}}WordPress self-hosted{{/a}} installation.', {
+		// When we don't generate zips, it's because we have released the theme on .org.
+		const downloadURI = this.props.href || ( 'https://wordpress.org/themes/' + this.props.theme );
+		const downloadText = i18n.translate( 'This theme is available for download to be used on your {{a}}WordPress self-hosted{{/a}} installation.', {
 			components: {
 				a: <a href={ downloadURI } />
 			}
