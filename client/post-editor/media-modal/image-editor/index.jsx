@@ -73,12 +73,13 @@ const MediaModalImageEditor = React.createClass( {
 	},
 
 	onImageExtracted( blob ) {
-		let file, fileName = this.props.fileName;
+		const fileName = this.props.fileName.replace( /\.[^.]+$/, '' ) + '.jpg';
 
-		fileName = fileName.replace( /\.[^.]+$/, '' ) + '.jpg';
-		file = new File( [ blob ], fileName );
-
-		MediaActions.add( this.props.site.ID, file );
+		MediaActions.add( this.props.site.ID, {
+			fileName,
+			fileContents: blob,
+			mimeType: blob.type
+		} );
 	},
 
 	//TODO: the drop zone currently exists for presentation purposes,
