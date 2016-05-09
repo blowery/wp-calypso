@@ -10,7 +10,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import page from 'page';
-import { isPremium } from 'my-sites/themes/helpers';
+import { isPremium, isActive } from 'my-sites/themes/helpers';
 
 /**
  * Internal dependencies
@@ -23,7 +23,7 @@ import SectionNav from 'components/section-nav';
 import NavTabs from 'components/section-nav/tabs';
 import NavItem from 'components/section-nav/item';
 import Card from 'components/card';
-import { signup, purchase, activate, clearActivated } from 'state/themes/actions';
+import { signup, purchase, activate, clearActivated, customize } from 'state/themes/actions';
 import i18n from 'lib/mixins/i18n';
 import { getSelectedSite } from 'state/ui/selectors';
 import { getSiteSlug } from 'state/sites/selectors';
@@ -59,10 +59,10 @@ const ThemeSheet = React.createClass( {
 	},
 
 	onPrimaryClick() {
-		// TODO: if active -> customize (could use theme slug from selected site)
-
 		if ( ! this.props.isLoggedIn ) {
 			this.props.dispatch( signup( this.props ) );
+		} else if ( isActive( this.props, this.props.selectedSite ) ) {
+			this.props.dispatch( customize( this.props, this.props.selectedSite ) );
 		// TODO: use site picker if no selected site
 		} else if ( isPremium( this.props ) ) {
 			// TODO: check theme is not already purchased
@@ -170,8 +170,11 @@ const ThemeSheet = React.createClass( {
 	},
 
 	render() {
+		const site = this.props.selectedSite;
+		const siteID = site && site.ID;
+
 		let actionTitle = <span className="themes__sheet-button-placeholder">loading......</span>;
-		if ( this.props.isLoggedIn && this.props.active ) { //FIXME: active ENOENT
+		if ( isActive( this.props, site ) ) {
 			actionTitle = i18n.translate( 'Customize' );
 		} else if ( this.props.name ) {
 			actionTitle = i18n.translate( 'Pick this design' );
@@ -179,7 +182,6 @@ const ThemeSheet = React.createClass( {
 
 		const section = this.validateSection( this.props.section );
 		const { themeContentElement, priceElement } = this.getDangerousElements( section );
-		const siteID = this.props.selectedSite && this.props.selectedSite.ID;
 
 		return (
 			<Main className="themes__sheet">
@@ -196,7 +198,7 @@ const ThemeSheet = React.createClass( {
 							<div className="themes__sheet-action-bar-container">
 								<Button onClick={ this.onPrimaryClick }>
 									{ actionTitle }
-									{ priceElement }
+									{ ! isActive( this.props, site ) && priceElement }
 								</Button>
 							</div>
 						</HeaderCake>
