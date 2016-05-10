@@ -1,51 +1,51 @@
 /**
  * External dependencies
  */
-var React = require( 'react' );
+import React from 'react';
 
 /**
  * Internal dependencies
  */
-var Dialog = require( 'components/dialog' ),
-	PulsingDot = require( 'components/pulsing-dot' ),
-	Helpers = require( './helpers' );
+import Dialog from 'components/dialog';
+import PulsingDot from 'components/pulsing-dot';
+import { getDetailsUrl, getForumUrl, trackClick } from './helpers';
 
-var ThanksModal = React.createClass( {
-	trackClick: Helpers.trackClick.bind( null, 'current theme' ),
+const ThanksModal = React.createClass( {
+	trackClick: trackClick.bind( null, 'current theme' ),
 
 	propTypes: {
 		clearActivated: React.PropTypes.func.isRequired
 	},
 
-	onCloseModal: function() {
+	onCloseModal() {
 		this.props.clearActivated();
 		this.setState( { show: false } );
 	},
 
-	visitSite: function() {
+	visitSite() {
 		this.trackClick( 'visit site' );
 		window.open( this.props.site.URL );
 	},
 
-	goBack: function() {
+	goBack() {
 		this.trackClick( 'go back' );
 		this.onCloseModal();
 	},
 
-	renderWpcomInfo: function() {
+	renderWpcomInfo() {
 		return (
 			<ul>
 				<li>
 					{ this.translate( "Discover this theme's {{a}}awesome features.{{/a}}", {
 						components: {
-							a: <a href={ Helpers.getDetailsUrl( this.props.currentTheme, this.props.site ) } target="_blank" />
+							a: <a href={ getDetailsUrl( this.props.currentTheme, this.props.site ) } target="_blank" />
 						}
 					} ) }
 				</li>
 			<li>
 				{ this.translate( 'Have questions? Stop by our {{a}}support forums.{{/a}}', {
 					components: {
-						a: <a href={ Helpers.getForumUrl( this.props.currentTheme ) } target="_blank" />
+						a: <a href={ getForumUrl( this.props.currentTheme ) } target="_blank" />
 					}
 				} ) }
 			</li>
@@ -53,7 +53,7 @@ var ThanksModal = React.createClass( {
 		);
 	},
 
-	renderWporgThemeInfo: function( themeUri ) {
+	renderWporgThemeInfo( themeUri ) {
 		if ( themeUri ) {
 			return (
 				<li>
@@ -67,7 +67,7 @@ var ThanksModal = React.createClass( {
 		}
 	},
 
-	renderWporgAuthorInfo: function( authorUri ) {
+	renderWporgAuthorInfo( authorUri ) {
 		if ( authorUri ) {
 			return (
 				<li>
@@ -81,7 +81,7 @@ var ThanksModal = React.createClass( {
 		}
 	},
 
-	renderWporgForumInfo: function() {
+	renderWporgForumInfo() {
 		return (
 			<li>
 				{ this.translate( 'If you need support, visit the WordPress.org {{a}}Themes forum{{/a}}.', {
@@ -93,9 +93,11 @@ var ThanksModal = React.createClass( {
 		);
 	},
 
-	renderJetpackInfo: function() {
-		const themeUri = this.props.currentTheme.theme_uri;
-		const authorUri = this.props.currentTheme.author_uri;
+	renderJetpackInfo() {
+		const {
+			theme_uri: themeUri,
+			author_uri: authorUri
+		} = this.props.currentTheme;
 
 		return (
 			<ul>
@@ -106,29 +108,30 @@ var ThanksModal = React.createClass( {
 		);
 	},
 
-	renderContent: function() {
+	renderContent() {
+		const {
+			name: themeName,
+			author: themeAuthor
+		} = this.props.currentTheme;
+
 		return (
 			<div>
 				<h1>
 					{ this.translate( 'Thanks for choosing {{br/}} %(themeName)s {{br/}} by %(themeAuthor)s', {
-						args: {
-							themeName: this.props.currentTheme.name,
-							themeAuthor: this.props.currentTheme.author
-						},
+						args: { themeName, themeAuthor },
 						components: {
 							br: <br />
 						}
 					} ) }
 				</h1>
 				<ul>
-
 					{ this.props.site.jetpack ? this.renderJetpackInfo() : this.renderWpcomInfo() }
 				</ul>
 			</div>
 		);
 	},
 
-	renderLoading: function() {
+	renderLoading() {
 		return (
 			<div>
 				<PulsingDot active={ true } />
@@ -136,10 +139,8 @@ var ThanksModal = React.createClass( {
 		);
 	},
 
-	render: function() {
-		var buttons;
-
-		buttons = [
+	render() {
+		const buttons = [
 			{ action: 'back', label: this.translate( 'Back to themes' ), onClick: this.goBack },
 			{ action: 'visitSite', label: this.translate( 'Visit site' ), isPrimary: true, onClick: this.visitSite },
 		];
@@ -152,4 +153,4 @@ var ThanksModal = React.createClass( {
 	},
 } );
 
-module.exports = ThanksModal;
+export default ThanksModal;
