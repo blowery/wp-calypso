@@ -112,7 +112,7 @@ PushNotifications.prototype.saveSubscription = function( subscription ) {
 
 	if ( oldSub !== sub || ( ! lastUpdated ) || age > DAYS_BEFORE_FORCING_REGISTRATION_REFRESH ) {
 		debug( 'Subscription needed updating.', age );
-		wpcom.undocumented().registerDevice( sub, 'chrome', 'Chrome', function() {
+		wpcom.undocumented().registerDevice( sub, 'browser', 'Browser', function() {
 			store.set( 'push-subscription', sub );
 			store.set( 'push-subscription-updated', moment().format() );
 			debug( 'Saved subscription', subscription );
