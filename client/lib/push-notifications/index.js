@@ -112,10 +112,15 @@ PushNotifications.prototype.saveSubscription = function( subscription ) {
 
 	if ( oldSub !== sub || ( ! lastUpdated ) || age > DAYS_BEFORE_FORCING_REGISTRATION_REFRESH ) {
 		debug( 'Subscription needed updating.', age );
-		wpcom.undocumented().registerDevice( sub, 'browser', 'Browser', function() {
+		wpcom.undocumented().registerDevice( sub, 'browser', 'Browser' ).then( ( data ) => {
+			debug( 'Subscription id', data.ID );
+			store.set( 'push-subscription-device-id', data.ID );
+
 			store.set( 'push-subscription', sub );
 			store.set( 'push-subscription-updated', moment().format() );
 			debug( 'Saved subscription', subscription );
+		} ).catch( ( error ) => {
+			debug( 'Couldn\'t register device', error );
 		} );
 	} else {
 		debug( 'Subscription did not need updating.', age );
