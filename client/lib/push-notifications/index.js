@@ -95,8 +95,22 @@ PushNotifications.prototype.setState = function( state, callback ) {
 };
 
 PushNotifications.prototype.deleteSubscription = function() {
-	// @todo: delete the subscription
-	debug( 'Delete subscription' );
+	const deviceId = store.get( 'push-subscription-device-id' );
+	if ( ! deviceId ) {
+		debug( 'Couldn\'t unregister device due to missing id' );
+		return;
+	}
+
+	wpcom.undocumented().unregisterDevice( deviceId ).then( ( data ) => {
+		if ( data.success ) {
+			store.remove( 'push-subscription-device-id' );
+			debug( 'Deleted subscription with id', deviceId );
+		} else {
+			debug( 'Couldn\'t unregister device' );
+		}
+	} ).catch( ( error ) => {
+		debug( 'Couldn\'t unregister device', error );
+	} );
 };
 
 PushNotifications.prototype.saveSubscription = function( subscription ) {
