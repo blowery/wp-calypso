@@ -158,21 +158,22 @@ MediaActions.add = function( siteId, files ) {
 		const isUrl = 'string' === typeof fileContents;
 		const addHandler = isUrl ? 'addMediaUrls' : 'addMediaFiles';
 
+		let params = {
+			[ isUrl ? 'url' : 'file' ]: file
+		};
+
 		// Assign parent ID if currently editing post
 		const post = PostEditStore.get();
 		if ( post && post.ID && ! isPlainObject( fileContents ) ) {
-			file = {
-				parent_id: post.ID,
-				[ isUrl ? 'url' : 'file' ]: file
-			};
+			params.parent_id = post.ID;
 		}
 
-		debug( 'Uploading media to %d from %o', siteId, file );
+		debug( 'Uploading media to %d from %o', siteId, params );
 		return lastUpload.then( () => {
 			// Achieve series upload by waiting for the previous promise to
 			// resolve before starting this item's upload
 			const action = { type: 'RECEIVE_MEDIA_ITEM', id, siteId };
-			return wpcom.site( siteId )[ addHandler ]( {}, file ).then( ( data ) => {
+			return wpcom.site( siteId )[ addHandler ]( {}, params ).then( ( data ) => {
 				Dispatcher.handleServerAction( Object.assign( action, {
 					data: data.media[ 0 ]
 				} ) );
