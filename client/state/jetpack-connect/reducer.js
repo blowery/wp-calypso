@@ -116,6 +116,7 @@ export function jetpackConnectAuthorize( state = {}, action ) {
 			if ( action.error ) {
 				return Object.assign( {}, state, { autoAuthorize: false } );
 			}
+			return state;
 		case SERIALIZE:
 		case DESERIALIZE:
 			return {};
